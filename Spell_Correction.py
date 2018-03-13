@@ -4,8 +4,8 @@ from Levenshtein import distance
 
 '''
 
-This code mainly uses the edit distance and a dictionary match on the incorrect words. First, the spell-errors file has been parsed to 
-form a dictionary of {misspelt_word: [list of correct words]}. Another dictionary has been created to store the probability counts of 
+This code mainly uses the edit distance and a dictionary match on the incorrect words. First, the spell-errors file has been parsed to
+form a dictionary of {misspelt_word: [list of correct words]}. Another dictionary has been created to store the probability counts of
 every word in the big.txt file and count_1w.txt. The main approach while parsing the test.csv file is to first check if the misspelt word
 has occured in the first dictionary. If it has then fetch the array of correct words and choose the word with the least Levenshtein distance.
 However, if it does not appear in the dictionary, calculate the possible edits with distance 2 of the incorrect word and fetch the one with
@@ -14,12 +14,12 @@ the maximum probability using p(w|x) = p(x|w)*p(w). The final output is stored i
 '''
 
 #Opens all the required files for processing
-bigFile = open('C:\\Users\\Niru Suresh\\.kaggle\\competitions\\spell-checker-nyu-cds\\big.txt','r')
-testFile = open('C:\\Users\\Niru Suresh\\.kaggle\\competitions\\spell-checker-nyu-cds\\test.csv','r')
-outputFile = open('C:\\Users\\Niru Suresh\\.kaggle\\competitions\\spell-checker-nyu-cds\\test_submi..csv','w')
-possibleCorrections = open('C:\\Users\\Niru Suresh\\.kaggle\\competitions\\spell-checker-nyu-cds\\spell-errors.txt','r')
-count1 = open('C:\\Users\\Niru Suresh\\.kaggle\\competitions\\spell-checker-nyu-cds\\count_1w.txt','r')
-count2 = open('C:\\Users\\Niru Suresh\\.kaggle\\competitions\\spell-checker-nyu-cds\\count_2w.txt','r')
+bigFile = open('big.txt','r')
+testFile = open('test.csv','r')
+outputFile = open('test_submit.csv','w')
+possibleCorrections = open('spell-errors.txt','r')
+count1 = open('count_1w.txt','r')
+count2 = open('count_2w.txt','r')
 
 #Regular expression to get all the words in a given text data
 def words(data):
@@ -78,7 +78,7 @@ def editDistance1(word):
 			inserts.append(a + c + b)
 	return set(deletes + inserts + replaces + transposes)
 
-'''Returns a set of words with edit distance 2 by first calling edit distance 1 and 
+'''Returns a set of words with edit distance 2 by first calling edit distance 1 and
 performing edit distance 1 again on the resulting words'''
 def editDistance2(word):
 	e1 = editDistance1(word)
@@ -125,4 +125,4 @@ if __name__ == '__main__':
 						maxprob = prob
 						maxsim = e
 			outputFile.write(str(i-1) + "," +  maxsim + "\n")
-			i += 1    
+			i += 1
